@@ -113,7 +113,7 @@ if __name__ == '__main__':
     parser.add_argument('--keyfile')
 
     args = parser.parse_args()
-    action = args.action.lower()
+    action = args.action #.lower()
     keyfile = args.keyfile
 
     rware = Ransomware()
