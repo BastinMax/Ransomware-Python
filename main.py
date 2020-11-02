@@ -149,6 +149,11 @@ if __name__ == '__main__':
     server = Server()
 
     if action == 'decrypt':
+        """
+        keyf = requests.get(url + "/keyfile", stream=True)
+        with open('keyfile', 'w') as fp:
+            fp.write(req.content)
+        """
         if keyfile is None:
             print('Veuillez spécifier le fichier de clé avec --keyfile')
         else:
