@@ -32,7 +32,7 @@ class Ransomware:
         """
         Lis la clé dans le fichier keyfile_name
         """
-        cryptor = Fernet(key)
+        self.cryptor = Fernet(key)
 
 
     def write_key(self, keyfile_name):
