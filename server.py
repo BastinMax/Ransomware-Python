@@ -4,11 +4,8 @@ import threading
 
 
 """
-    def __init__(self, server_address, port):
-        self.port = port
-        self.server_address = server_address
+Le serveur hébergera la clé de déchiffrement envoyé par la victime.
 """
-
 
 port = 8080
 server_address = ("127.0.0.1", port) #Création d'un serveur web en localhost
