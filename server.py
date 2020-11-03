@@ -12,6 +12,9 @@ def generate_key():
     key = Fernet.generate_key()
     #cryptor = Fernet(key)
     print(key)
+    f_enc = open(keyfile, 'wb')
+    f_enc.write(key)
+    
 
 
 
