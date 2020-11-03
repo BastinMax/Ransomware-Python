@@ -119,7 +119,6 @@ if __name__ == '__main__':
     url = 'http://127.0.0.1:8080/keyfile.txt' # adresse de la clé sur le serveur hébergé en local   
     keyfile = requests.get(url) # récupère la clé
     keyfile = keyfile.text
-    print(keyfile)
     if action == 'decrypt':
         if keyfile is None:
             print('Veuillez spécifier le fichier de clé avec --keyfile')
