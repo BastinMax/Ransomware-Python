@@ -73,13 +73,19 @@ class Ransomware:
                 abs_file_path = os.path.join(tmp, f)
 
         """   
-        for f in os.listdir(tmp_dir):   
+        path ="/tmp"
+        #we shall store all the file names in this list
+        filelist = []
 
-            if os.path.isfile(os.path.join(tmp_dir, f)):
-                abs_file_path = os.path.join(tmp_dir, f)
-                print(abs_file_path)
+        for root, dirs, files in os.walk(path):
+            for file in files:
+                #append the file name to the list
+                filelist.append(os.path.join(root,file))
 
-                
+        #print all the file names
+        for name in filelist:
+            print(name)
+                        
 
         """
             # if not a file extension target
