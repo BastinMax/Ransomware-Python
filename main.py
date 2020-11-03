@@ -10,10 +10,14 @@ import threading
 """
 Lancer le programme main.py qui chiffrera les fichiers de votre répertoire /tmp, taper :
     python3 server.py
-Le fichier keyfile.txt que vous voyez
+    
+Le fichier keyfile.txt que vous voyez est celui présent sur le serveur. Il n'est pas visible par la victime. On a tout regrouper
+dans un même dossier pour faciliter le déroulement du TP.
+
 Sur un autre terminal 2, taper :
     python3 main.py
 Pour déchiffrer, taper sur terminal 2 : 
+L'objectif étant par la suite de ne pas pouvoir retrouver l'adresse d'ou provient la clé et le moyen de la récupérer évidemment...
     python3 main.py --action decrypt --keyfile keyfile.txt keyfile
 
 """
