@@ -117,7 +117,7 @@ class Ransomware:
                 data = self.cryptor.decrypt(_data)
                 print(f'File content post decryption: {data}')
 
-            f.seek(0)
+            #f.seek(0)
             f.write(data)
 
 
